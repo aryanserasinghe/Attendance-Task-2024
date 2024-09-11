@@ -10,7 +10,7 @@ connect.then(() => {
     console.log("Database Connnection Failed");
 })
 
-//Create a Schema
+//Create a Login Schema
 
 const LoginSchema = new mongoose.Schema({
     name: {

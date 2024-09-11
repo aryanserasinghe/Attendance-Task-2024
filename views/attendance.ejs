@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance Page</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="header">
+        <h1>Attendance Management System</h1>
+    </div>
+
+    <div class="form-container">
+        <h2>Welcome</h2>
+        <form action="/attendance" method="post">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" placeholder="Enter your username" required autocomplete="off">
+            </div>
+            
+            <div class="form-group">
+                <label for="date">Date</label>
+                <input type="date" id="date" name="date" required>
+            </div>
+            <div class="form-group">
+                <label for="timein">Time In</label>
+                <input type="time" id="timein" name="timein" required>
+            </div>
+            <div class="form-group">
+                <label for="timeout">Time Out</label>
+                <input type="time" id="timeout" name="timeout">
+            </div>
+            <div class="form-group">
+                <label for="status">Attendance</label>
+                <select id="status" name="status" required>
+                    <option value="Present">Present</option>
+                    <option value="Absent">Absent</option>
+                </select>
+            </div>
+            <button type="submit" class="submit-btn">Confirm Attendance</button>
+        </form>
+        <div class="records-link">
+            <a href="/records">View Records</a>
+        </div>
+    </div>
+</body>
+</html>

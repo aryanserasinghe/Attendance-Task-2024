@@ -32,6 +32,11 @@ app.get("/login", (req, res) => {
     res.render("login");
 });
 
+// Render Attendance Page
+app.get("/attendance", (req, res) => {
+    res.render("attendance");
+});
+
 //Register User
 app.post("/registration",async (req, res) => {
 
@@ -57,23 +62,58 @@ app.post("/registration",async (req, res) => {
 });
 
 //Login User
-
-app. post("/login", async (req, res) => {
-    try{
-        const check = await collection.findOne({name: req.body.username});
-        if(!check) {
-            res.send("User Cannot Be Found");
+app.post("/login", async (req, res) => {
+    try {
+        const check = await collection.findOne({ name: req.body.username });
+        if (!check) {
+            return res.send("User Cannot Be Found");
         }
 
-        //Compare the hash password from the database with the plain text
+        // Compare the hash password from the database with the plain text
         const isPasswordMatch = await bcrypt.compare(req.body.password, check.password);
-        if(isPasswordMatch) {
-            res.render("attendance");
+        if (isPasswordMatch) {
+            // Send a JavaScript snippet to redirect the user
+            res.send(`
+                <html>
+                    <body>
+                        <script>
+                            window.location.href = '/attendance';
+                        </script>
+                    </body>
+                </html>
+            `);
+        } else {
+            res.send("Wrong Details");
         }
-    }catch{
-        res.send("Wrong Details");
+    } catch (error) {
+        res.send("An error occurred");
     }
-});    
+});
+
+//User Attendance
+app.post("/attendance", async (req, res) => {
+    try {
+        // Ensure the user is logged in
+        if (!req.session.user) {
+            return res.redirect("/login");
+        }
+
+        // Create an attendance record
+        const attendance = new Attendance({
+            username: req.body.username,
+            date: req.body.date,
+            timein: req.body.timein,
+            timeout: req.body.timeout,
+            status: req.body.status
+        });
+
+        await attendance.save();
+        console.log('Attendance recorded:', attendance);
+        res.send("Attendance recorded successfully.");
+    } catch (error) {
+        res.send("An error occurred while recording attendance: " + error.message);
+    }
+});
 
 const port = 5000;
 app.listen(port, () => {
