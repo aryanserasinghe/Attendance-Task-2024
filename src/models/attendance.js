@@ -1,8 +1,6 @@
-const { name } = require("ejs");
 const mongoose = require("mongoose");
-const collection = require("./config");
-const connect = mongoose.connect("mongodb://localhost:27017/Attendance_Task_2024");
 
+// Define the Attendance Schema
 const AttendanceSchema = new mongoose.Schema({
     username: {
         type: String,
@@ -27,6 +25,8 @@ const AttendanceSchema = new mongoose.Schema({
     }
 });
 
+// Create the Attendance Model
 const Attendance = mongoose.model("Attendance", AttendanceSchema);
 
-module.exports = collection;
+// Export the model
+module.exports = Attendance;

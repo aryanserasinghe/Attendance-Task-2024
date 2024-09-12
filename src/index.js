@@ -2,6 +2,7 @@ const express = require('express');
 const path = require("path");
 const bcrypt = require("bcrypt");
 const collection = require("./config");
+const Attendance = require("./models/attendance"); // Import the Attendance model
 
 const app = express();
 //Convert Data into json format
@@ -90,14 +91,9 @@ app.post("/login", async (req, res) => {
     }
 });
 
-//User Attendance
+// User Attendance
 app.post("/attendance", async (req, res) => {
     try {
-        // Ensure the user is logged in
-        if (!req.session.user) {
-            return res.redirect("/login");
-        }
-
         // Create an attendance record
         const attendance = new Attendance({
             username: req.body.username,
@@ -107,13 +103,14 @@ app.post("/attendance", async (req, res) => {
             status: req.body.status
         });
 
-        await attendance.save();
+        await attendance.save(); // Save the record to the database
         console.log('Attendance recorded:', attendance);
         res.send("Attendance recorded successfully.");
     } catch (error) {
         res.send("An error occurred while recording attendance: " + error.message);
     }
 });
+
 
 const port = 5000;
 app.listen(port, () => {
